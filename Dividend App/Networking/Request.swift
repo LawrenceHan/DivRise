@@ -13,14 +13,14 @@ import Combine
 internal let searchCompanyURL = "https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords={query}&apikey={apikey}"
 
 // MARK: FinancialModelingPrep
-internal let companyProfileURL = "https://financialmodelingprep.com/api/v3/company/profile/{company}"
-internal let companyKeyMetricsURL = "https://financialmodelingprep.com/api/v3/company-key-metrics/{company}?period={period}"
-internal let companyCashFlowURL = "https://financialmodelingprep.com/api/v3/financials/cash-flow-statement/{company}?period={period}"
-internal let companyIncomeURL = "https://financialmodelingprep.com/api/v3/financials/income-statement/{company}?period={period}"
-internal let companyBalanceURL = "https://financialmodelingprep.com/api/v3/financials/balance-sheet-statement/{company}?period={period}"
-internal let companyFinancialGrowthURL = "https://financialmodelingprep.com/api/v3/financial-statement-growth/{company}?period={period}"
-internal let stockHistoricalPriceURL = "https://financialmodelingprep.com/api/v3/historical-price-full/{company}?serietype=line"
-internal let currentStockPriceURL = "https://financialmodelingprep.com/api/v3/stock/real-time-price/{company}"
+internal let companyProfileURL = "https://financialmodelingprep.com/api/v3/company/profile/{company}?apikey={apikey}"
+internal let companyKeyMetricsURL = "https://financialmodelingprep.com/api/v3/company-key-metrics/{company}?period={period}&apikey={apikey}"
+internal let companyCashFlowURL = "https://financialmodelingprep.com/api/v3/financials/cash-flow-statement/{company}?period={period}&apikey={apikey}"
+internal let companyIncomeURL = "https://financialmodelingprep.com/api/v3/financials/income-statement/{company}?period={period}&apikey={apikey}"
+internal let companyBalanceURL = "https://financialmodelingprep.com/api/v3/financials/balance-sheet-statement/{company}?period={period}&apikey={apikey}"
+internal let companyFinancialGrowthURL = "https://financialmodelingprep.com/api/v3/financial-statement-growth/{company}?period={period}&apikey={apikey}"
+internal let stockHistoricalPriceURL = "https://financialmodelingprep.com/api/v3/historical-price-full/{company}?serietype=line&apikey={apikey}"
+internal let currentStockPriceURL = "https://financialmodelingprep.com/api/v3/stock/real-time-price/{company}?apikey={apikey}"
 
 // MARK: NewsAPI
 internal let everythingURL = "https://newsapi.org/v2/everything"
@@ -132,7 +132,9 @@ struct Request {
     
     // MARK: Portfolio & Search Shared
     private func companyProfile(identifier: String) -> AnyPublisher<CompanyProfileResponse, Never> {
-        let urlString = companyProfileURL.replacingOccurrences(of: "{company}", with: identifier)
+        let urlString = companyProfileURL
+            .replacingOccurrences(of: "{company}", with: identifier)
+            .replacingOccurrences(of: "{apikey}", with: configuration.financialModelingPrepKey)
         let url = URL(string: urlString)!
         
         return URLSession.shared
@@ -148,6 +150,7 @@ struct Request {
         let urlString = companyKeyMetricsURL
             .replacingOccurrences(of: "{company}", with: identifier)
             .replacingOccurrences(of: "{period}", with: period)
+            .replacingOccurrences(of: "{apikey}", with: configuration.financialModelingPrepKey)
         let url = URL(string: urlString)!
         
         
@@ -163,6 +166,7 @@ struct Request {
         let urlString = companyCashFlowURL
             .replacingOccurrences(of: "{company}", with: identifier)
             .replacingOccurrences(of: "{period}", with: period)
+            .replacingOccurrences(of: "{apikey}", with: configuration.financialModelingPrepKey)
         let url = URL(string: urlString)!
         
         return URLSession.shared
@@ -177,6 +181,7 @@ struct Request {
         let urlString = companyIncomeURL
             .replacingOccurrences(of: "{company}", with: identifier)
             .replacingOccurrences(of: "{period}", with: period)
+            .replacingOccurrences(of: "{apikey}", with: configuration.financialModelingPrepKey)
         let url = URL(string: urlString)!
         
         return URLSession.shared
@@ -191,6 +196,7 @@ struct Request {
         let urlString = companyBalanceURL
             .replacingOccurrences(of: "{company}", with: identifier)
             .replacingOccurrences(of: "{period}", with: period)
+            .replacingOccurrences(of: "{apikey}", with: configuration.financialModelingPrepKey)
         let url = URL(string: urlString)!
         
         return URLSession.shared
@@ -205,6 +211,7 @@ struct Request {
         let urlString = companyFinancialGrowthURL
             .replacingOccurrences(of: "{company}", with: identifier)
             .replacingOccurrences(of: "{period}", with: period)
+            .replacingOccurrences(of: "{apikey}", with: configuration.financialModelingPrepKey)
         let url = URL(string: urlString)!
         
         return URLSession.shared
@@ -218,6 +225,7 @@ struct Request {
     func getStockHistoricalPriceURL(identifier: String) -> AnyPublisher<StockHistoricalPriceResponse, Never> {
         let urlString = stockHistoricalPriceURL
             .replacingOccurrences(of: "{company}", with: identifier)
+            .replacingOccurrences(of: "{apikey}", with: configuration.financialModelingPrepKey)
         let url = URL(string: urlString)!
         
         return URLSession.shared
@@ -255,6 +263,7 @@ struct Request {
     func getCurrentSharePrice(portfolioStock: PortfolioStock) -> AnyPublisher<Double, Never> {
         let urlString = currentStockPriceURL
             .replacingOccurrences(of: "{company}", with: portfolioStock.ticker)
+            .replacingOccurrences(of: "{apikey}", with: configuration.financialModelingPrepKey)
         let url = URL(string: urlString)!
         
         return URLSession.shared

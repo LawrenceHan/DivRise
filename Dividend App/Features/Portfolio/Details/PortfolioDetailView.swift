@@ -50,7 +50,9 @@ struct PortfolioDetailView: View {
                 values.append(inner)
                 inner.removeAll()
             }
-            inner.append(arr.first!)
+            if let value = arr.first {
+                inner.append(value)
+            }
         }
         values.append(inner)
         return values
